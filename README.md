@@ -52,7 +52,7 @@ Organized to separate raw data, processing scripts, and downstream analysis.
         - STAR_index/
       - Human_immunodeficiency_virus_1
         - STAR_index/
-    - fastq/
+    - fastq/        # raw fastq files
     - clean_fastq/  # BBduk output files
     - STAR/         # STAR output files
       - STAR_human
