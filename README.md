@@ -49,18 +49,18 @@ Organized to separate raw data, processing scripts, and downstream analysis.
       - STAR
     - annotation/
       - homo_sapiens/
-        - STAR_index/
+        - STAR_index
       - Human_immunodeficiency_virus_1
-        - STAR_index/
+        - STAR_index
     - fastq/        # raw fastq files
     - clean_fastq/  # BBduk output files
     - STAR/         # STAR output files
       - STAR_human
       - STAR_hiv
     - fastqc/       # FastQC output files
-      - original_fastq/
-      - clean_fastq/
-      - unmapped_fastq/
+      - original_fastq
+      - clean_fastq
+      - unmapped_fastq
     - salmon/       # salmon output files
       - salmon_human
       - salmon_hiv
