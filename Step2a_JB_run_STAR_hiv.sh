@@ -20,7 +20,7 @@ BAM_DIR="${BASE_DIR}/STAR/STAR_hiv"
 
 ## location of STAR bin (version STAR_2.5.4b) & HIV index
 STAR_DIR="${BASE_DIR}/bin/STAR/bin/Linux_x86_64/STAR"
-STAR_INDEX="${BASE_DIR}/Annotation/Human_immunodeficiency_virus_1/STAR_index_HIV"
+STAR_INDEX="${BASE_DIR}/annotation/Human_immunodeficiency_virus_1/STAR_index_HIV"
 
 echo "Running STAR alignment on unmapped reads from sample: ${name}"
 
