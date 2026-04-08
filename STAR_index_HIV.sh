@@ -1,12 +1,29 @@
 #!/bin/bash
 
-## Get HIV reference annotation (retrieved 2024-09)
-mkdir -p "RefGenome"
-cd "RefGenome"
+## Save this script as:
+## /path/to/HIV-mg-rnaseq/code/STAR_index_HIV.sh
+
+## To execute, cd into the code folder, then type:
+## ./STAR_index_HIV.sh
+
+## Description:
+## Create STAR index for HIV 
+
+## ------------ Setup directories ------------- ##
+
+## Base directory: /path/to/
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+
+## Subdirectories
+mkdir -p "${BASE_DIR}/Annotation"
+cd "${BASE_DIR}/Annotation"
+
+## --- Get HIV reference annotation (retrieved 2024-09) ---- ##
+
 wget -r -np -nH --cut-dirs=3 -e robots=off https://ftp.ncbi.nlm.nih.gov/genomes/refseq/viral/Human_immunodeficiency_virus_1/reference/GCF_000864765.1_ViralProj15476/
 cd "Human_immunodeficiency_virus_1"
 mkdir -p STAR_index_HIV
-cd /reference/GCF_000864765.1_ViralProj15476/
+cd "/reference/GCF_000864765.1_ViralProj15476/"
 
 ## note: I unzipped the following files
 # -c: Keeps the original files unchanged (write on standard output, keep original files unchanged)
@@ -16,24 +33,22 @@ gunzip -c GCF_000864765.1_ViralProj15476_genomic.gff.gz >GCF_000864765.1_ViralPr
 gunzip -c GCF_000864765.1_ViralProj15476_cds_from_genomic.fna.gz >GCF_000864765.1_ViralProj15476_cds_from_genomic.fna
 gunzip -c GCF_000864765.1_ViralProj15476_feature_table.txt.gz >GCF_000864765.1_ViralProj15476_feature_table.txt
 
-# Ran interactive node in a screen
+## --------- interactive node in a screen ---------- ##
+ 
 screen
 qrsh -l h_rt=24:00:00,h_data=16G,highp -pe shared 8
 
-## Base directory
-BASE_DIR="/u/scratch/j/jbuth/Fregoso_Novitch_Bulk_June2021"
-
 ## STAR bin & index
-STAR_DIR="/u/project/gandalm/jbuth/bin/STAR/bin/Linux_x86_64/STAR"
+STAR_DIR="${BASE_DIR}/bin/STAR/bin/Linux_x86_64/STAR"
 
 ## species reference directory
-HIV_DIR=${BASE_DIR}/RefGenome/Human_immunodeficiency_virus_1
+HIV_DIR="${BASE_DIR}/Annotation/Human_immunodeficiency_virus_1"
 
 ## genome fasta
-GENOME_FA=${HIV_DIR}/reference/GCF_000864765.1_ViralProj15476/GCF_000864765.1_ViralProj15476_genomic.fna
+GENOME_FA="${HIV_DIR}/reference/GCF_000864765.1_ViralProj15476/GCF_000864765.1_ViralProj15476_genomic.fna"
 
 ## annotation gtf (NOTE USING GFF)
-ANNO_GTF=${HIV_DIR}/reference/GCF_000864765.1_ViralProj15476/GCF_000864765.1_ViralProj15476_genomic.gff
+ANNO_GTF="${HIV_DIR}/reference/GCF_000864765.1_ViralProj15476/GCF_000864765.1_ViralProj15476_genomic.gff"
 ## Using gff file for annotation, in STAR call assigned:
 	## "exon_id" labels -> --sjdbGTFtagExonParentTranscript "CDS" 
 	## "gene" labels -> --sjdbGTFtagExonParentGene "Parent"
@@ -42,9 +57,9 @@ ANNO_GTF=${HIV_DIR}/reference/GCF_000864765.1_ViralProj15476/GCF_000864765.1_Vir
 ## Round down to choose 5 from -> min(14, log2(GenomeLength=9181)/2 - 1) = 5.58
   
 ${STARdir} --runThreadN 8 --runMode genomeGenerate \
-	--genomeDir ${HIV_DIR}/STAR_index_HIV \
-	--genomeFastaFiles ${GENOME_FA} \
-	--sjdbGTFfile ${ANNO_GTF} \
+	--genomeDir "${HIV_DIR}/STAR_index_HIV" \
+	--genomeFastaFiles "${GENOME_FA}" \
+	--sjdbGTFfile "${ANNO_GTF}" \
 	--genomeSAindexNbases 5 \
 	--sjdbGTFfeatureExon "CDS" \
 	--sjdbGTFtagExonParentTranscript "Parent"
