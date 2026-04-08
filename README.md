@@ -19,7 +19,7 @@ Buth, J. E. (2025). Modeling neurodevelopment and disease using human pluripoten
 - The raw and processed dataset will be available at GEO after publication
 - Supplementary tables from Chapter 7 include results from pathway analysis (Table 7-1), external gene list enrichments (Table 7-2), and differential expression (Table 7-5)
 
-## Pipeline Overview
+## Pipeline Overview:
 FASTQ → BBDuk (quality control) → STAR (human alignment) → Salmon (human quantification)  
 → Unmapped reads → STAR (HIV alignment) → Salmon (HIV quantification)  
 → Tximport (merge human + HIV counts)
