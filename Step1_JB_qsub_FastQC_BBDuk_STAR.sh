@@ -1,9 +1,21 @@
 #!/bin/bash
 
-## submit a loop of qsub jobs to run FastQC, STAR, and BBDuk
+## Save this script as:
+## /path/to/HIV-MG-rnaseq/code/Step1_JB_qsub_FastQC_BBDuk_STAR.sh
 
-## Setup directories
-BASE_DIR="/u/scratch/j/jbuth/Fregoso_Novitch_Bulk_June2021"
+## To execute, cd into the code folder, then type:
+## ./Step1_JB_qsub_FastQC_BBDuk_STAR.sh
+
+## Description:
+## submit a loop of qsub jobs to run FastQC, STAR, and BBDuk
+## qsub runs the script Step1a_JB_run_FastQC_BBDuk_STAR.sh
+
+## ------ Setup directories ------- ##
+
+## Base directory: /path/to/
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+
+## Subdirectories
 FASTQ_DIR="${BASE_DIR}/fastq"
 
 mkdir -p "${BASE_DIR}/STAR/STAR_human"
@@ -27,6 +39,6 @@ for file in *_L001_R1_001.fastq.gz; do
      -e "${CODE_DIR}/log" \
      -l h_rt=12:00:00,h_data=16G,highp \
      -pe shared 8 \
-     "${CODE_DIR}/Step1a_JB_run_FastQC_BBDuk_STAR.sh" "${name}"
+     "${CODE_DIR}/Step1a_JB_run_FastQC_BBDuk_STAR.sh" "${name}" "${BASE_DIR}"
   fi
 done
