@@ -1,6 +1,6 @@
 # HIV-MG-rnaseq
 
-This repository contains code for a bulk RNA-seq processing pipeline (FASTQ → count matrix) used in Chapter 7 of:
+This repository contains a bulk RNA-seq processing pipeline (FASTQ → count matrix) used in Chapter 7 of:
 
 Buth, J. E. (2025). Modeling neurodevelopment and disease using human pluripotent stem cells and mouse models. UCLA. ProQuest ID: Buth_ucla_0031D_23855. Merritt ID: ark:/13030/m5xn01g0. Retrieved from https://escholarship.org/uc/item/9794n656
 
