@@ -8,20 +8,20 @@
 module load conda/23.11.0
 conda activate salmon
 
-## Human transcripts 
-TRANSCRIPT_FASTA="/u/project/butlersj/jbuth/RefGenome/homo_sapiens/Annotation/gencode.v28.transcripts.fa"
+## base names from the previous qsub loop
+name=$1
 
-## project folder (base directory - working in scratch folder for now - make sure to download copy)
-BASE_DIR="/u/scratch/j/jbuth/Fregoso_Novitch_Bulk_June2021"
+## project folder (base directory)
+BASE_DIR="2"
+
+## Human transcripts 
+TRANSCRIPT_FASTA="${BASE_DIR}/annotation/homo_sapiens/gencode.v28.transcripts.fa"
 
 ## output Aligned.toTranscriptome.out.bam files from STAR_human
 BAM_DIR="${BASE_DIR}/STAR/STAR_human"
 
 ## Output directory
 SALMON_OUT_DIR="${BASE_DIR}/salmon/salmon_human"
-
-## this keeps the base names from the previous qsub loop
-name=$1
 
 salmon quant --targets ${TRANSCRIPT_FASTA} \
   --libType A \
