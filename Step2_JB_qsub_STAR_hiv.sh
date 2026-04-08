@@ -1,11 +1,22 @@
 #!/bin/bash
 
-## submit a loop of qsub jobs to run STAR with HIV index
+## Save this script as:
+## /path/to/HIV-MG-rnaseq/code/Step2_JB_qsub_STAR_hiv.sh
 
-## project folder (base directory - working in scratch folder for now - make sure to download copy)
-BASE_DIR="/u/scratch/j/jbuth/Fregoso_Novitch_Bulk_June2021"
+## To execute, cd into the code folder, then type:
+## ./Step2_JB_qsub_STAR_hiv.sh
 
-## output unmapped fastq files (aligned to human -> saved unmapped)
+## Description:
+## submit a loop of qsub jobs to run FastQC, STAR (with HIV index), and BBDuk
+## qsub runs the script Step2a_JB_run_STAR_hiv.sh
+
+## ------ Setup directories ------- ##
+
+## Base directory: /path/to/
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+
+## Subdirectories
+## output folder unmapped fastq files (aligned to human -> saved unmapped)
 UNMAPPED_FASTQ_DIR="${BASE_DIR}/STAR/STAR_human"
 
 ## where you want output BAM files from STAR to go
@@ -29,6 +40,6 @@ if ! [ -s "${BAM_DIR}/${name}*.bam" ]; then
      -e "${code}/log" \
      -l h_rt=1:00:00,h_data=16G,highp \
      -pe shared 8 \
-     "${code}/Step2a_JB_run_STAR_hiv.sh" "${name}"
+     "${code}/Step2a_JB_run_STAR_hiv.sh" "${name}" "${BASE_DIR}"
 fi
 done
