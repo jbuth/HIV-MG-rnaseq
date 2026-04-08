@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## Running salmon in alignment-based mode using STAR v2.5.4b Aligned.toTranscriptome.out.bam files
+## Running salmon (version 1.10.3; updated 2024-08) in alignment-based mode using STAR (v2.5.4b) Aligned.toTranscriptome.out.bam files
 
 ## module command
 . /u/local/Modules/default/init/modules.sh
