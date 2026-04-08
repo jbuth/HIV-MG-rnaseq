@@ -22,7 +22,7 @@ cd "${BASE_DIR}/annotation"
 
 wget -r -np -nH --cut-dirs=3 -e robots=off https://ftp.ncbi.nlm.nih.gov/genomes/refseq/viral/Human_immunodeficiency_virus_1/reference/GCF_000864765.1_ViralProj15476/
 cd "Human_immunodeficiency_virus_1"
-mkdir -p STAR_index_HIV
+mkdir -p "STAR_index"
 cd "/reference/GCF_000864765.1_ViralProj15476/"
 
 ## note: I unzipped the following files
@@ -57,7 +57,7 @@ ANNO_GTF="${HIV_DIR}/reference/GCF_000864765.1_ViralProj15476/GCF_000864765.1_Vi
 ## Round down to choose 5 from -> min(14, log2(GenomeLength=9181)/2 - 1) = 5.58
   
 ${STARdir} --runThreadN 8 --runMode genomeGenerate \
-	--genomeDir "${HIV_DIR}/STAR_index_HIV" \
+	--genomeDir "${HIV_DIR}/STAR_index" \
 	--genomeFastaFiles "${GENOME_FA}" \
 	--sjdbGTFfile "${ANNO_GTF}" \
 	--genomeSAindexNbases 5 \
