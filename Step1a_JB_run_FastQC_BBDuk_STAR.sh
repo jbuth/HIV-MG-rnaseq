@@ -30,8 +30,10 @@ BAM_DIR="${BASE_DIR}/STAR/STAR_human"
 module load conda/23.11.0
 conda activate bbmap
 
-## adapters and contaminates to remove (note this was run on hoffman2, edit BBMAP_DIR as needed)
+## Note: this was run on hoffman2, edit BBMAP_DIR as needed
 BBMAP_DIR="/u/home/j/jbuth/.conda/envs/bbmap/opt/bbmap-39.08-0/resources"
+
+## adapters and contaminates to remove
 ADAPTERS_fa="${BBMAP_DIR}/adapters.fa"
 ARTIFACTS_fa="${BBMAP_DIR}/sequencing_artifacts.fa.gz"
 SHORT_fa="${BBMAP_DIR}/short.fa"
@@ -46,7 +48,7 @@ bbduk.sh in="${FASTQ_DIR}/${name}_L001_R1_001.fastq.gz" \
 	ref="${ADAPTERS_fa}","${ARTIFACTS_fa}","${SHORT_fa}","${POLYA_fa}" \
 	stats="${CLEAN_FASTQ_DIR}/${name}_stats.txt" \
 	threads=6 ktrim=r k=23 \
-  mink=11 hdist=1 tpe tbo \
+	mink=11 hdist=1 tpe tbo \
 	qtrim=r trimq=10 maq=10
 
 conda deactivate
