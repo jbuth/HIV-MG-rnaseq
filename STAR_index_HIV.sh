@@ -15,8 +15,8 @@
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
 ## Subdirectories
-mkdir -p "${BASE_DIR}/Annotation"
-cd "${BASE_DIR}/Annotation"
+mkdir -p "${BASE_DIR}/annotation"
+cd "${BASE_DIR}/annotation"
 
 ## --- Get HIV reference annotation (retrieved 2024-09) ---- ##
 
@@ -42,7 +42,7 @@ qrsh -l h_rt=24:00:00,h_data=16G,highp -pe shared 8
 STAR_DIR="${BASE_DIR}/bin/STAR/bin/Linux_x86_64/STAR"
 
 ## species reference directory
-HIV_DIR="${BASE_DIR}/Annotation/Human_immunodeficiency_virus_1"
+HIV_DIR="${BASE_DIR}/annotation/Human_immunodeficiency_virus_1"
 
 ## genome fasta
 GENOME_FA="${HIV_DIR}/reference/GCF_000864765.1_ViralProj15476/GCF_000864765.1_ViralProj15476_genomic.fna"
