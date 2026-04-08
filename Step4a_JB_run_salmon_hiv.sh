@@ -8,20 +8,20 @@
 module load conda/23.11.0
 conda activate salmon
 
-## project folder (base directory - working in scratch folder for now - make sure to download copy)
-BASE_DIR="/u/scratch/j/jbuth/Fregoso_Novitch_Bulk_June2021"
+## this keeps the base names from the previous qsub loop
+name="$1"
+
+## project folder (base directory)
+BASE_DIR="2"
 
 ## hiv transcripts 
-TRANSCRIPT_FASTA="${BASE_DIR}/RefGenome/Human_immunodeficiency_virus_1/reference/GCF_000864765.1_ViralProj15476/GCF_000864765.1_ViralProj15476_cds_from_genomic_edited_for_salmon.fna"
+TRANSCRIPT_FASTA="${BASE_DIR}/annotation/Human_immunodeficiency_virus_1/reference/GCF_000864765.1_ViralProj15476/GCF_000864765.1_ViralProj15476_cds_from_genomic_edited_for_salmon.fna"
 
 ## output Aligned.toTranscriptome.out.bam files from STAR_human
 BAM_DIR="${BASE_DIR}/STAR/STAR_hiv"
 
 ## Output directory
 SALMON_OUT_DIR="${BASE_DIR}/salmon/salmon_hiv"
-
-## this keeps the base names from the previous qsub loop
-name="$1"
 
 salmon quant --targets "${TRANSCRIPT_FASTA}" --libType ISR \
 	--alignments "${BAM_DIR}/${name}Aligned.toTranscriptome.out.bam" \
