@@ -33,6 +33,7 @@ FASTQ → BBDuk (quality control) → STAR (human alignment) → Salmon (human q
 
 ## Directory Structure:
 Organized to separate raw data, processing scripts, and downstream analysis.
+```plaintext
 - HIV-MG-rnaseq/
     - code/
       - log
@@ -65,4 +66,5 @@ Organized to separate raw data, processing scripts, and downstream analysis.
       - salmon_hiv
     - R/
       - Step5_JB_Tximport.R
+```
 
