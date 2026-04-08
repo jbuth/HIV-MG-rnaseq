@@ -48,9 +48,9 @@ Organized to separate raw data, processing scripts, and downstream analysis.
       - STAR
     - annotation/
       - homo_sapiens/
-        - STAR_index_human/
+        - STAR_index/
       - Human_immunodeficiency_virus_1
-        - STAR_index_hiv/
+        - STAR_index/
     - fastq/
     - clean_fastq/  # BBduk output files
     - STAR/         # STAR output files
