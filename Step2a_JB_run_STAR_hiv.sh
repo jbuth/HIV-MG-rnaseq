@@ -1,5 +1,7 @@
 #!/bin/bash
 
+## After alignment to human, now align the unmapped reads with the HIV index
+
 ## project folder (base directory)
 BASE_DIR="/u/scratch/j/jbuth/Fregoso_Novitch_Bulk_June2021"
 
@@ -15,7 +17,7 @@ name="$1"
 
 ###### ----- STAR Alignment to HIV with clean fastq file pairs ----- ###### 
 
-## location of STAR bin & index
+## location of STAR bin (version STAR_2.5.4b) & HIV index
 STAR_DIR="/u/project/gandalm/jbuth/bin/STAR/bin/Linux_x86_64/STAR"
 STAR_INDEX="${BASE_DIR}/RefGenome/Human_immunodeficiency_virus_1/STAR_index_HIV"
 
