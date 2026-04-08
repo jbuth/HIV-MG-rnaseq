@@ -55,7 +55,7 @@ conda deactivate
 
 ## location of STAR bin & index
 STAR_DIR="${BASE_DIR}/bin/STAR/bin/Linux_x86_64/STAR"
-STAR_INDEX="${BASE_DIR}/Annotation/homo_sapiens/STAR_index"
+STAR_INDEX="${BASE_DIR}/annotation/homo_sapiens/STAR_index"
 	## files to generate STAR index for Human
 	## --------> genome.fa -> hg38.fa
 	## --------> GTF annotation -> gencode.v28.annotation.gtf
