@@ -20,11 +20,11 @@ options(stringsAsFactors = FALSE)
 library(splicejam)
 
 # load human GTF ####
-human.gtf.file = "RefGenome/homo_sapiens/Annotation/gencode.v28.annotation.gtf"
+human.gtf.file = "annotation/homo_sapiens/Annotation/gencode.v28.annotation.gtf"
 tx2gene.human = makeTx2geneFromGtf(human.gtf.file)
 
 # load hiv GTF ####
-hiv.gtf.file = "RefGenome/Human_immunodeficiency_virus_1/reference/GCF_000864765.1_ViralProj15476/GCF_000864765.1_ViralProj15476_genomic.gtf"
+hiv.gtf.file = "annotation/Human_immunodeficiency_virus_1/reference/GCF_000864765.1_ViralProj15476/GCF_000864765.1_ViralProj15476_genomic.gtf"
 tx2gene.hiv = makeTx2geneFromGtf(
   hiv.gtf.file,
   geneAttrNames = c("gene_id", "db_xref", "gene", "gene_biotype"),
@@ -42,11 +42,15 @@ tx2gene.hiv = makeTx2geneFromGtf(
                 # leaving off locus_tag, is name as gene_id
 
 # Put in order by gene_id HIV1gp1-HIV1gp10
-tx2gene.hiv = tx2gene.hiv[order(tx2gene.hiv$protein_id, decreasing=F),]
+tx2gene.hiv = tx2gene.hiv[order(tx2gene.hiv$protein_id, decreasing=FALSE),]
 
 # adding some additional info to the note column & combining product/protein_id
 tx2gene.hiv$note[tx2gene.hiv$gene=="asp"] = "antisense gene asp is unique to group M strains and has unknown function - Pavesi 2024 PMID:38230940 full ORF associated with faster disease progression"
-tx2gene.hiv$additional_info = paste0("alt_name:", tx2gene.hiv$gene_id, " / db_xef:", tx2gene.hiv$db_xref, " / product:", tx2gene.hiv$product, " / protein_id:", tx2gene.hiv$protein_id, " / note:", tx2gene.hiv$note)
+tx2gene.hiv$additional_info = paste0("alt_name:", tx2gene.hiv$gene_id, 
+                                     " / db_xref:", tx2gene.hiv$db_xref, 
+                                     " / product:", tx2gene.hiv$product, 
+                                     " / protein_id:", tx2gene.hiv$protein_id, 
+                                     " / note:", tx2gene.hiv$note)
 
     # head(tx2gene.hiv, 2)
         #                         gene_id    gene db_xref
@@ -82,7 +86,7 @@ tx2gene.hiv$additional_info = paste0("alt_name:", tx2gene.hiv$gene_id, " / db_xe
 
 ## --- Load hiv quant.sf files from salmon --- ##
 
-library(tximport);
+library(tximport)
 
 # HIV ####
 
@@ -171,18 +175,10 @@ txi.salmon.human <- tximport(files = human.files,
 
 ## --- Get additional annotations with biomaRt --- ##
 
-library(biomaRt);
+library(biomaRt)
 
-# Get gene cds lengths for human
-getinfo <- c("ensembl_transcript_id","ensembl_gene_id", "external_gene_name",
-             "description", "hgnc_symbol","entrezgene_id", 
-             "mirbase_accession", "mirbase_id",
-             "chromosome_name", "start_position", "end_position",
-             "transcript_count", "transcript_start", "transcript_end", "transcript_length", 
-             "percentage_gene_gc_content", "gene_biotype",
-             "family", "family_description")
-
-# GENCODE version 28 corresponds to Ensembl 92
+# GENCODE version 28 corresponds to Ensembl 92, but the available archives were 77, 80, 97, 98
+# Using 97 here as closest available
 ensembl = useEnsembl(biomart="ensembl", 
                      dataset="hsapiens_gene_ensembl", 
                      version=97) # available archives go 77,80,97,98
@@ -203,7 +199,7 @@ getinfo2 <- c("ensembl_gene_id", "external_gene_name",
               "percentage_gene_gc_content", "gene_biotype", 
               "family", "family_description")
 
-getinfo4 <- c('ensembl_gene_id','transcript_count','cds_length')
+getinfo3 <- c('ensembl_gene_id','transcript_count','cds_length')
 
 bm1 <- getBM(attributes = getinfo1,
              mart = ensembl)
@@ -213,14 +209,14 @@ bm2 <- getBM(attributes = getinfo2,
              mart = ensembl)
 dim(bm2) # [1] 83857     8
 
-bm4 <- getBM(attributes = getinfo4,
+bm3 <- getBM(attributes = getinfo3,
              mart = ensembl)
-dim(bm4) # [1] 247909      7
+dim(bm3) # [1] 247909      7
 
 # combine to 1 bm
-idx = match(substr(rownames(txi.salmon.human$counts),1,15), bm4$ensembl_gene_id)
+idx = match(substr(rownames(txi.salmon.human$counts),1,15), bm3$ensembl_gene_id)
 
-bm4.exp = bm4[idx, ]
+bm3.exp = bm3[idx, ]
     #       ensembl_gene_id transcript_count cds_length
     # 18680 ENSG00000000003                5        738
     # 18631 ENSG00000000005                2        954
@@ -238,8 +234,8 @@ bm.final = data.frame(ensembl_gene_id=bm1.exp$ensembl_gene_id,
                       description=bm1.exp$description,
                       gene_biotype=bm2.exp$gene_biotype, 
                       percentage_gene_gc_content=bm2.exp$percentage_gene_gc_content,
-                      transcript_count=bm4.exp$transcript_count, 
-                      cds_length=bm4.exp$cds_length, 
+                      transcript_count=bm3.exp$transcript_count, 
+                      cds_length=bm3.exp$cds_length, 
                       chromosome_name= bm1.exp$chromosome_name,
                       family=bm2.exp$family, 
                       family_description=bm2.exp$family_description,
@@ -286,7 +282,7 @@ geneAnno = geneAnno[-idx, ]
 save(txi.salmon.hiv, txi.salmon.human, geneAnno,
      file="R/HIV-MG_2021_RNAseq/data/HIV-MG_2021_RNAseq_raw_counts_salmon.RData")
 
-## --- Create df of sample metadata --- #
+## --- Create df of sample metadata --- ##
 
 datMeta = data.frame(Sample = colnames(txi.salmon.human$counts))
 
@@ -346,6 +342,6 @@ datMeta$Percent_human_counts = (datMeta$Human_counts/datMeta$Total_counts)*100
 
 datExpr_unfilt = all.counts
 
-save(geneAnno, datMeta, datExpr,
+save(geneAnno, datMeta, datExpr_unfilt,
      file="R/data/HIV-MG-rnaseq_unfiltered_counts.RData")
 
