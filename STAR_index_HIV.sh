@@ -16,14 +16,14 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
 ## Subdirectories
 mkdir -p "${BASE_DIR}/annotation"
-cd "${BASE_DIR}/annotation"
+cd "${BASE_DIR}/annotation" || exit
 
 ## --- Get HIV reference annotation (retrieved 2024-09) ---- ##
 
 wget -r -np -nH --cut-dirs=3 -e robots=off https://ftp.ncbi.nlm.nih.gov/genomes/refseq/viral/Human_immunodeficiency_virus_1/reference/GCF_000864765.1_ViralProj15476/
-cd "Human_immunodeficiency_virus_1"
+cd "Human_immunodeficiency_virus_1" || exit
 mkdir -p "STAR_index"
-cd "/reference/GCF_000864765.1_ViralProj15476/"
+cd "/reference/GCF_000864765.1_ViralProj15476/" || exit
 
 ## note: I unzipped the following files
 # -c: Keeps the original files unchanged (write on standard output, keep original files unchanged)
@@ -56,7 +56,7 @@ ANNO_GTF="${HIV_DIR}/reference/GCF_000864765.1_ViralProj15476/GCF_000864765.1_Vi
 ## Must account for the small HIV genome size with --genomeSAindexNbases 5 
 ## Round down to choose 5 from -> min(14, log2(GenomeLength=9181)/2 - 1) = 5.58
   
-${STARdir} --runThreadN 8 --runMode genomeGenerate \
+${STAR_DIR} --runThreadN 8 --runMode genomeGenerate \
 	--genomeDir "${HIV_DIR}/STAR_index" \
 	--genomeFastaFiles "${GENOME_FA}" \
 	--sjdbGTFfile "${ANNO_GTF}" \
