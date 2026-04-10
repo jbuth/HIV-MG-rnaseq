@@ -32,7 +32,7 @@ FASTQ → BBDuk (quality control) → STAR (human alignment) → Salmon (human q
 - Step5: R script to merge human and HIV quantifications into a single count matrix
 
 ## Directory Structure:
-Organized to separate raw data, processing scripts, and downstream analysis.
+The bash scripts (Steps 1–4) were run on an HPC cluster (UCLA Hoffman2). The R script (Step 5) was run locally, with the salmon output directory copied to the local project folder.
 ```plaintext
 - HIV-MG-rnaseq/
     - code/
